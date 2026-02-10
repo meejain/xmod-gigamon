@@ -1,0 +1,196 @@
+/* Block is the main container for the full-bleed image */
+.tabs-spotlight {
+  position: relative;
+  overflow: hidden;
+  background: #1a2b4c;
+  margin-bottom: 32px;
+}
+
+/* Section heading pulled into block */
+.tabs-spotlight .tabs-spotlight-heading {
+  position: relative;
+  z-index: 3;
+  color: white;
+  padding: 40px 24px 0;
+  margin: 0;
+  font-size: var(--heading-font-size-xl);
+}
+
+@media (width >= 900px) {
+  .tabs-spotlight .tabs-spotlight-heading {
+    padding: 48px 48px 0;
+  }
+}
+
+/* Tab list */
+.tabs-spotlight .tabs-spotlight-list {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 0.5ch;
+  max-width: 100%;
+  font-size: var(--body-font-size-xs);
+  overflow-x: auto;
+  padding: 0 24px;
+}
+
+@media (width >= 600px) {
+  .tabs-spotlight .tabs-spotlight-list {
+    font-size: var(--body-font-size-s);
+  }
+}
+
+@media (width >= 900px) {
+  .tabs-spotlight .tabs-spotlight-list {
+    font-size: var(--body-font-size-m);
+    padding: 0 48px;
+  }
+}
+
+.tabs-spotlight .tabs-spotlight-list button {
+  flex: 0 0 max-content;
+  margin: 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  padding: 12px 24px;
+  background-color: transparent;
+  color: rgb(255 255 255 / 70%);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  text-overflow: unset;
+  overflow: unset;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tabs-spotlight .tabs-spotlight-list button:hover {
+  color: #ff6b00;
+}
+
+.tabs-spotlight .tabs-spotlight-list button p {
+  margin: 0;
+}
+
+.tabs-spotlight .tabs-spotlight-list button[aria-selected='true'] {
+  border-bottom: 3px solid #ff6b00;
+  background-color: transparent;
+  color: white;
+  cursor: initial;
+}
+
+/* Tab panel */
+.tabs-spotlight .tabs-spotlight-panel {
+  margin-top: 0;
+  border: none;
+  overflow: visible;
+  position: static;
+  min-height: 250px;
+}
+
+@media (width >= 900px) {
+  .tabs-spotlight .tabs-spotlight-panel {
+    min-height: 300px;
+  }
+}
+
+.tabs-spotlight .tabs-spotlight-panel[aria-hidden='true'] {
+  display: none;
+}
+
+/* Content overlays the image */
+.tabs-spotlight .tabs-spotlight-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 24px 40px;
+  color: white;
+  max-width: 100%;
+}
+
+@media (width >= 900px) {
+  .tabs-spotlight .tabs-spotlight-content {
+    width: 55%;
+    padding: 32px 48px 48px;
+  }
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-spotlight .tabs-spotlight-content p {
+  color: white;
+}
+
+.tabs-spotlight .tabs-spotlight-content p:first-child {
+  font-size: var(--heading-font-size-m);
+  font-weight: 600;
+  margin-top: 0;
+  color: white;
+}
+
+@media (width >= 900px) {
+  .tabs-spotlight .tabs-spotlight-content p:first-child {
+    font-size: var(--heading-font-size-l);
+  }
+}
+
+.tabs-spotlight .tabs-spotlight-content p strong {
+  font-weight: inherit;
+}
+
+.tabs-spotlight .tabs-spotlight-content a.button,
+.tabs-spotlight .tabs-spotlight-content strong a {
+  display: inline-block;
+  background-color: #ff6b00;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.tabs-spotlight .tabs-spotlight-content a.button:hover,
+.tabs-spotlight .tabs-spotlight-content strong a:hover {
+  background-color: #e55f00;
+  color: white;
+}
+
+/* Tab panel image - full background covering entire block */
+.tabs-spotlight .tabs-spotlight-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.tabs-spotlight .tabs-spotlight-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tabs-spotlight .tabs-spotlight-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Gradient overlay for text readability */
+.tabs-spotlight .tabs-spotlight-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgb(10 22 40 / 85%) 0%, rgb(10 22 40 / 60%) 50%, rgb(10 22 40 / 20%) 100%);
+}

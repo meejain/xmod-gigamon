@@ -1,0 +1,39 @@
+{
+  "variantName": "tabs-spotlight",
+  "baseBlock": "tabs",
+  "version": "1.0.0",
+  "created": "2026-02-04T21:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.gigamon.com/",
+    "originPage": "Homepage Learn How section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "standard",
+    "purpose": "features",
+    "imagePattern": "background"
+  },
+  "contentPattern": {
+    "structure": "tab label + title + description + CTA per tab",
+    "buttonCount": 3,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "Feature spotlight sections",
+      "Product capability tabs",
+      "Solution category switchers"
+    ],
+    "notSuitableFor": [
+      "FAQ sections",
+      "Simple content toggles",
+      "Image galleries"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-02-04T21:44:00.000Z"
+  }
+}
