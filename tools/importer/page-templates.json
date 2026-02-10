@@ -1,0 +1,39 @@
+{
+  "templates": [
+    {
+      "name": "gigamon-homepage",
+      "urls": ["https://www.gigamon.com/"],
+      "description": "Gigamon corporate homepage with hero carousel, customer logos, spotlight tabs, featured case study, testimonials, award banner, and news carousel",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": ["section.component-carousel.slick-dotted"]
+        },
+        {
+          "name": "columns-logos",
+          "instances": [".medium-gray-5-bg .component-responsive-layout"]
+        },
+        {
+          "name": "tabs-spotlight",
+          "instances": [".responsive-tabs-container"]
+        },
+        {
+          "name": "cards-featured",
+          "instances": [".aus-link"]
+        },
+        {
+          "name": "columns-quotes",
+          "instances": [".hp-testimonial-section .component-responsive-layout"]
+        },
+        {
+          "name": "columns-banner",
+          "instances": [".frost-section"]
+        },
+        {
+          "name": "carousel-news",
+          "instances": [".whatsnew-carousel"]
+        }
+      ]
+    }
+  ]
+}

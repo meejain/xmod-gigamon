@@ -1,0 +1,50 @@
+.cards-blog {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.cards-blog > div {
+  border-top: 1px solid #e0e0e0;
+  padding: 24px 0;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.cards-blog > div > div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Date */
+.cards-blog > div > div > p:first-child {
+  font-size: 14px;
+  color: #505050;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+/* Title */
+.cards-blog > div > div > p:nth-child(2) {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2b4c;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.cards-blog > div > div > p:nth-child(2) strong {
+  font-weight: inherit;
+}
+
+/* Excerpt */
+.cards-blog > div > div > p:nth-child(3) {
+  font-size: 15px;
+  color: #505050;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CTA - hidden, whole row is readable without it */
+.cards-blog > div > div > p:last-child {
+  display: none;
+}

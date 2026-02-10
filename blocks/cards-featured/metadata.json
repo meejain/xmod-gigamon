@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-featured",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-02-04T21:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.gigamon.com/",
+    "originPage": "Homepage featured case study",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "standard",
+    "purpose": "case-study",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image + label + logo + quote + author + CTA",
+    "buttonCount": 1,
+    "imageCount": 2
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "Featured case studies",
+      "Customer spotlight cards",
+      "Single highlight items"
+    ],
+    "notSuitableFor": [
+      "Multiple card grids",
+      "Simple feature lists",
+      "Image galleries"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-02-04T21:44:00.000Z"
+  }
+}

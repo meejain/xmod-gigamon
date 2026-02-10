@@ -1,0 +1,4 @@
+/* Metadata block is hidden by default */
+.metadata {
+  display: none;
+}

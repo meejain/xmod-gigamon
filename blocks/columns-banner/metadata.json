@@ -1,0 +1,39 @@
+{
+  "variantName": "columns-banner",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-02-04T21:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.gigamon.com/",
+    "originPage": "Homepage award banner section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "wide",
+    "purpose": "banner",
+    "imagePattern": "logo"
+  },
+  "contentPattern": {
+    "structure": "logo + heading + description + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "Award/recognition banners",
+      "Promotional highlights",
+      "Featured announcements"
+    ],
+    "notSuitableFor": [
+      "Multiple item displays",
+      "Text-heavy sections",
+      "Image galleries"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-02-04T21:44:00.000Z"
+  }
+}

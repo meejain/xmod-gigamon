@@ -1,0 +1,119 @@
+.cards-featured > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cards-featured > ul > li {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 10%);
+}
+
+@media (width >= 900px) {
+  .cards-featured > ul > li {
+    flex-direction: row;
+  }
+}
+
+.cards-featured .cards-featured-card-image {
+  flex: 0 0 45%;
+  line-height: 0;
+  position: relative;
+}
+
+.cards-featured .cards-featured-card-image picture {
+  display: block;
+  height: 100%;
+}
+
+.cards-featured > ul > li img {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  object-fit: cover;
+}
+
+@media (width >= 900px) {
+  .cards-featured > ul > li img {
+    min-height: 350px;
+  }
+}
+
+.cards-featured .cards-featured-card-body {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (width >= 900px) {
+  .cards-featured .cards-featured-card-body {
+    padding: 32px 40px;
+  }
+}
+
+.cards-featured .cards-featured-card-body p:first-child {
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ff6b00;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.cards-featured .cards-featured-card-body p:nth-child(2) {
+  margin-bottom: 16px;
+}
+
+.cards-featured .cards-featured-card-body p:nth-child(2) img {
+  max-width: 150px;
+  height: auto;
+  min-height: auto;
+  object-fit: contain;
+}
+
+.cards-featured .cards-featured-card-body p:nth-child(3) {
+  font-size: var(--heading-font-size-s);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  color: var(--text-color);
+}
+
+.cards-featured .cards-featured-card-body p:nth-child(4) {
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 24px;
+}
+
+.cards-featured .cards-featured-card-body a.button {
+  background-color: transparent;
+  color: #ff6b00;
+  border: 2px solid #ff6b00;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.cards-featured .cards-featured-card-body a.button:hover {
+  background-color: #ff6b00;
+  color: white;
+}

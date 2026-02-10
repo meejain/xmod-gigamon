@@ -1,0 +1,39 @@
+{
+  "variantName": "carousel-news",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-02-04T21:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.gigamon.com/",
+    "originPage": "Homepage What's New section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "standard",
+    "purpose": "news",
+    "imagePattern": "card"
+  },
+  "contentPattern": {
+    "structure": "image + category + title + description + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "News/updates carousels",
+      "Content card rotators",
+      "Resource highlight sliders"
+    ],
+    "notSuitableFor": [
+      "Hero sections",
+      "Image-only galleries",
+      "Testimonial sliders"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-02-04T21:44:00.000Z"
+  }
+}
