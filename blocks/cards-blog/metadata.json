@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-blog",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-02-04T21:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.gigamon.com/",
+    "originPage": "Homepage latest blogs section",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "blog-listing",
+    "imagePattern": "none"
+  },
+  "contentPattern": {
+    "structure": "date + title + excerpt + CTA",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "Blog post listings",
+      "News article summaries",
+      "Content feed previews"
+    ],
+    "notSuitableFor": [
+      "Image-heavy card grids",
+      "Feature highlight cards",
+      "Product showcases"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-02-04T21:44:00.000Z"
+  }
+}
