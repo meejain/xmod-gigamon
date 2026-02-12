@@ -205,7 +205,7 @@ function buildMegaMenu(navItem) {
  */
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/content/nav';
   const fragment = await loadFragment(navPath);
 
   block.textContent = '';
@@ -305,7 +305,7 @@ export default async function decorate(block) {
     }
   }
 
-  // Process tools section (DEMOS + CONTACT SALES)
+  // Process tools section (utility nav + DEMOS + CONTACT SALES)
   const navTools = nav.querySelector('.nav-tools');
   if (navTools) {
     navTools.querySelectorAll('.button').forEach((btn) => {
@@ -314,15 +314,185 @@ export default async function decorate(block) {
       if (bc) bc.className = '';
     });
 
-    // Add classes to CTA buttons
-    const links = navTools.querySelectorAll('a');
-    links.forEach((a) => {
-      if (a.textContent.trim().toUpperCase() === 'DEMOS') {
-        a.classList.add('cta-demos');
-      } else if (a.textContent.trim().toUpperCase() === 'CONTACT SALES') {
-        a.classList.add('cta-contact');
-      }
-    });
+    const toolsList = navTools.querySelector('ul');
+    if (toolsList) {
+      const utilityWrap = document.createElement('div');
+      utilityWrap.className = 'utility-nav';
+      const ctaWrap = document.createElement('div');
+      ctaWrap.className = 'cta-nav';
+
+      [...toolsList.children].forEach((li) => {
+        const text = li.textContent.trim();
+        const upperText = text.toUpperCase();
+        const subList = li.querySelector(':scope > ul');
+        const link = li.querySelector(':scope > p > a, :scope > a');
+        const strongEl = li.querySelector(':scope > p > strong') || li.querySelector(':scope > strong');
+
+        if (subList && strongEl) {
+          const label = strongEl.textContent.trim();
+          const labelUpper = label.toUpperCase();
+
+          if (labelUpper === 'LOGIN') {
+            // Build Login utility button with dropdown
+            const loginItem = document.createElement('div');
+            loginItem.className = 'utility-item utility-login';
+
+            const loginBtn = document.createElement('button');
+            loginBtn.className = 'utility-btn';
+            loginBtn.setAttribute('aria-expanded', 'false');
+            loginBtn.setAttribute('aria-label', 'Login');
+            loginBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/></svg>';
+            loginItem.append(loginBtn);
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'utility-dropdown';
+            const heading = document.createElement('span');
+            heading.className = 'utility-dropdown-heading';
+            heading.textContent = label;
+            dropdown.append(heading);
+
+            const ul = document.createElement('ul');
+            [...subList.children].forEach((linkLi) => {
+              const a = linkLi.querySelector('a');
+              if (a) {
+                const newLi = document.createElement('li');
+                const newA = document.createElement('a');
+                newA.href = a.href;
+                newA.textContent = a.textContent;
+                newA.target = '_blank';
+                newA.rel = 'noopener noreferrer';
+                newLi.append(newA);
+                ul.append(newLi);
+              }
+            });
+            dropdown.append(ul);
+            loginItem.append(dropdown);
+            utilityWrap.append(loginItem);
+
+            // Toggle on click
+            loginBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const isOpen = loginBtn.getAttribute('aria-expanded') === 'true';
+              // Close all utility dropdowns
+              utilityWrap.querySelectorAll('.utility-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+              // Close search panel
+              const sp = nav.querySelector('.search-panel');
+              if (sp) sp.classList.remove('visible');
+              if (!isOpen) loginBtn.setAttribute('aria-expanded', 'true');
+            });
+          } else if (labelUpper === 'LANGUAGE') {
+            // Build Language selector with dropdown
+            const langItem = document.createElement('div');
+            langItem.className = 'utility-item utility-lang';
+
+            const langBtn = document.createElement('button');
+            langBtn.className = 'utility-btn';
+            langBtn.setAttribute('aria-expanded', 'false');
+            langBtn.setAttribute('aria-label', 'Language');
+            langBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10A15 15 0 0 1 12 2z"/></svg><span class="lang-label">EN</span>';
+            langItem.append(langBtn);
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'utility-dropdown';
+            const heading = document.createElement('span');
+            heading.className = 'utility-dropdown-heading';
+            heading.textContent = label;
+            dropdown.append(heading);
+
+            const ul = document.createElement('ul');
+            [...subList.children].forEach((linkLi, idx) => {
+              const a = linkLi.querySelector('a');
+              if (a) {
+                const newLi = document.createElement('li');
+                if (idx === 0) newLi.classList.add('active-lang');
+                const newA = document.createElement('a');
+                newA.href = a.href;
+                newA.textContent = a.textContent;
+                newLi.append(newA);
+                ul.append(newLi);
+              }
+            });
+            dropdown.append(ul);
+            langItem.append(dropdown);
+            utilityWrap.append(langItem);
+
+            langBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const isOpen = langBtn.getAttribute('aria-expanded') === 'true';
+              utilityWrap.querySelectorAll('.utility-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+              const sp = nav.querySelector('.search-panel');
+              if (sp) sp.classList.remove('visible');
+              if (!isOpen) langBtn.setAttribute('aria-expanded', 'true');
+            });
+          }
+        } else if (upperText === 'SEARCH' && !link) {
+          // Build Search utility button
+          const searchItem = document.createElement('div');
+          searchItem.className = 'utility-item utility-search';
+
+          const searchBtn = document.createElement('button');
+          searchBtn.className = 'utility-btn';
+          searchBtn.setAttribute('aria-expanded', 'false');
+          searchBtn.setAttribute('aria-label', 'Search');
+          searchBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>';
+          searchItem.append(searchBtn);
+          utilityWrap.append(searchItem);
+
+          // Build search panel (full-width bar below header)
+          const searchPanel = document.createElement('div');
+          searchPanel.className = 'search-panel';
+          const searchInner = document.createElement('div');
+          searchInner.className = 'search-panel-inner';
+          const searchInput = document.createElement('input');
+          searchInput.type = 'text';
+          searchInput.placeholder = 'Search';
+          searchInput.className = 'search-input';
+          const searchSubmit = document.createElement('button');
+          searchSubmit.className = 'search-submit';
+          searchSubmit.setAttribute('aria-label', 'Submit search');
+          searchSubmit.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>';
+          searchInner.append(searchInput);
+          searchInner.append(searchSubmit);
+          searchPanel.append(searchInner);
+          nav.append(searchPanel);
+
+          searchBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            utilityWrap.querySelectorAll('.utility-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+            const isVisible = searchPanel.classList.contains('visible');
+            searchPanel.classList.toggle('visible');
+            searchBtn.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
+            if (!isVisible) searchInput.focus();
+          });
+        } else if (link) {
+          // CTA buttons (DEMOS, CONTACT SALES)
+          const a = link.tagName === 'A' ? link : link.querySelector('a');
+          if (a) {
+            const ctaText = a.textContent.trim().toUpperCase();
+            const newA = document.createElement('a');
+            newA.href = a.href;
+            newA.textContent = a.textContent.trim();
+            if (ctaText === 'DEMOS') newA.classList.add('cta-demos');
+            else if (ctaText === 'CONTACT SALES') newA.classList.add('cta-contact');
+            ctaWrap.append(newA);
+          }
+        }
+      });
+
+      // Close utility dropdowns when clicking outside
+      document.addEventListener('click', () => {
+        utilityWrap.querySelectorAll('.utility-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+      });
+      utilityWrap.addEventListener('click', (e) => e.stopPropagation());
+
+      // Replace the original tools content
+      navTools.textContent = '';
+      const toolsWrapper = document.createElement('div');
+      toolsWrapper.className = 'nav-tools-inner';
+      toolsWrapper.append(utilityWrap);
+      toolsWrapper.append(ctaWrap);
+      navTools.append(toolsWrapper);
+    }
   }
 
   // Background overlay for mega menus
