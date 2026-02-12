@@ -205,7 +205,7 @@ function buildMegaMenu(navItem) {
  */
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/content/nav';
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   const fragment = await loadFragment(navPath);
 
   block.textContent = '';
@@ -325,7 +325,7 @@ export default async function decorate(block) {
         const text = li.textContent.trim();
         const upperText = text.toUpperCase();
         const subList = li.querySelector(':scope > ul');
-        const link = li.querySelector(':scope > p > a, :scope > a');
+        const link = li.querySelector(':scope > p > a, :scope > a, :scope > p > strong > a, :scope > strong > a');
         const strongEl = li.querySelector(':scope > p > strong') || li.querySelector(':scope > strong');
 
         if (subList && strongEl) {
