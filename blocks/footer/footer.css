@@ -1,11 +1,14 @@
+/* footer */
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+  background-color: #121b1f;
+  color: rgba(255 255 255 / 90%);
+  font-size: 12px;
+  font-family: var(--body-font-family);
 }
 
 footer .footer > div {
   margin: auto;
-  max-width: 1200px;
+  max-width: 1280px;
   padding: 40px 24px 24px;
 }
 
@@ -13,8 +16,120 @@ footer .footer p {
   margin: 0;
 }
 
+/* reset button decoration inside footer */
+footer .footer .button-container {
+  display: block;
+  margin: 0;
+}
+
+footer .footer a.button {
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: rgba(255 255 255 / 90%);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.2;
+  text-decoration: none;
+  text-align: left;
+  white-space: normal;
+}
+
+footer .footer a.button:hover {
+  background: none;
+  color: var(--brand-orange, #ff6b00);
+}
+
+/* footer columns - override base columns block */
+footer .footer .columns-wrapper {
+  padding: 0;
+}
+
+footer .footer .columns > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  flex-direction: unset;
+  align-items: start;
+}
+
+footer .footer .columns > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  order: unset;
+  flex: unset;
+}
+
+/* column headings */
+footer .footer .columns > div > div > p:first-child {
+  margin-bottom: 12px;
+}
+
+footer .footer .columns > div > div > p:first-child strong {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* bottom section (social + legal + copyright) */
+footer .footer > div:last-child {
+  border-top: 1px solid rgba(255 255 255 / 15%);
+  padding-top: 24px;
+  margin-top: 8px;
+}
+
+/* social links row */
+footer .footer > div:last-child > p:first-child a,
+footer .footer > div:last-child > p:first-child a.button {
+  display: inline;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+footer .footer > div:last-child > p:first-child a:hover,
+footer .footer > div:last-child > p:first-child a.button:hover {
+  color: var(--brand-orange, #ff6b00);
+}
+
+/* legal links row */
+footer .footer > div:last-child > p:nth-child(2) {
+  margin-top: 16px;
+}
+
+footer .footer > div:last-child > p:nth-child(2) a,
+footer .footer > div:last-child > p:nth-child(2) a.button {
+  display: inline;
+  color: rgba(255 255 255 / 70%);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+footer .footer > div:last-child > p:nth-child(2) a:hover,
+footer .footer > div:last-child > p:nth-child(2) a.button:hover {
+  color: var(--brand-orange, #ff6b00);
+}
+
+/* copyright */
+footer .footer > div:last-child > p:last-child {
+  margin-top: 16px;
+  color: rgba(255 255 255 / 50%);
+  font-size: 11px;
+}
+
 @media (width >= 900px) {
   footer .footer > div {
-    padding: 40px 32px 24px;
+    padding: 48px 32px 32px;
+  }
+
+  footer .footer .columns > div {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
   }
 }
