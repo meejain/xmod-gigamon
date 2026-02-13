@@ -261,11 +261,11 @@ function initLottieWhenVisible(container) {
 
 function getDefaultDopJsonUrl() {
   const base = (typeof window !== 'undefined' && window.hlx?.codeBasePath) ? window.hlx.codeBasePath.replace(/\/$/, '') : '';
-  const path = `${base}/video/dop.json`;
+  const path = `${base}/blocks/lottie-animation/dop.json`;
   try {
     return new URL(path, typeof window !== 'undefined' ? window.location.origin : '').href;
   } catch {
-    return '/video/dop.json';
+    return '/blocks/lottie-animation/dop.json';
   }
 }
 
