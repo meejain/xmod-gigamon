@@ -143,6 +143,16 @@ async function loadLazy(doc) {
     document.body.appendChild(block);
     loadBlock(block);
   })();
+
+  /* Share module - fixed left, vertically centered, expands on hover */
+  (async () => {
+    const { loadBlock } = await import('./aem.js');
+    const block = document.createElement('div');
+    block.dataset.blockName = 'share-module';
+    block.className = 'block share-module';
+    document.body.appendChild(block);
+    loadBlock(block);
+  })();
 }
 
 /**
