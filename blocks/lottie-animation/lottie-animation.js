@@ -52,6 +52,27 @@ function toAbsoluteJsonUrl(url) {
   }
 }
 
+/**
+ * Strip time-remap (`tm`) expressions from animation data.
+ * lottie-web's expression engine for `loopOut`/`loopIn` on time-remap
+ * layers crashes silently under EDS CSP, leaving the SVG empty.
+ * Keyframe data (`k`) is preserved so the animation still plays.
+ */
+function stripTmExpressions(data) {
+  const walk = (layers) => {
+    if (!Array.isArray(layers)) return;
+    layers.forEach((layer) => {
+      if (layer.tm && layer.tm.x) {
+        delete layer.tm.x;
+      }
+    });
+  };
+  walk(data.layers);
+  if (Array.isArray(data.assets)) {
+    data.assets.forEach((asset) => walk(asset.layers));
+  }
+}
+
 function loadLottieIntoContainer(container) {
   const jsonUrl = container.getAttribute('data-jsonsrc');
   if (!jsonUrl) {
@@ -133,6 +154,7 @@ function loadLottieIntoContainer(container) {
     })
     .then((animationData) => {
       log('JSON loaded, frames/layers:', animationData?.op != null ? 'yes' : 'no');
+      stripTmExpressions(animationData);
       const { lottie } = window;
       if (!lottie || typeof lottie.loadAnimation !== 'function') {
         throw new Error('lottie-web not available');
