@@ -1,23 +1,96 @@
 /* Lottie animation block - Why Gigamon / Deep Observability Pipeline */
 
-.lottie-animation .lottie-container {
-  width: 100%;
-  min-height: 250px;
-  position: relative;
+/* Section layout: match original site row + col-lg-5 (text) | col-lg-7 (lottie), align-center */
+main .section.lottie-animation-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-@media (min-width: 1200px) {
+main .section.lottie-animation-container > div {
+  max-width: 100%;
+}
+
+/* Match original: lg breakpoint (992px), 5/7 columns, gutter 30px, align-center */
+@media (width >= 992px) {
+  main .section.lottie-animation-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  main .section.lottie-animation-container > .default-content-wrapper,
+  main .section.lottie-animation-container > .lottie-animation-wrapper {
+    max-width: none;
+  }
+
+  /* col-lg-5 ≈ 5/12 – text column: heading, paragraph, button stacked left */
+  main .section.lottie-animation-container > .default-content-wrapper {
+    flex: 0 0 41.6667%;
+    max-width: 41.6667%;
+    min-width: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Keep button in left column, below text – block flow so it never overflows right */
+  main .section.lottie-animation-container > .default-content-wrapper .button-container,
+  main .section.lottie-animation-container > .default-content-wrapper p:has(a.button) {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 0;
+  }
+
+  main .section.lottie-animation-container > .default-content-wrapper .button-container a.button,
+  main .section.lottie-animation-container > .default-content-wrapper p:has(a.button) a.button {
+    margin-left: 0;
+  }
+
+  /* col-lg-7 ≈ 7/12 */
+  main .section.lottie-animation-container > .lottie-animation-wrapper {
+    flex: 0 0 58.3333%;
+    max-width: 58.3333%;
+    min-width: 0;
+  }
+}
+
+/* Prevent EDS layout from collapsing: block and container must have non-zero height */
+
+.lottie-animation.block {
+  min-height: 250px;
+}
+
+.lottie-animation .lottie-container {
+  width: 100%;
+  height: 250px;
+  min-height: 250px;
+  position: relative;
+  overflow: visible;
+}
+
+@media (width >= 1200px) {
   .lottie-animation .lottie-container {
+    height: 528px;
     min-height: 528px;
   }
 }
 
 /* Landscape mobile overrides */
 @media only screen
-  and (min-device-width: 375px)
-  and (max-device-width: 667px)
-  and (width: 667px)
-  and (height: 375px)
+  and (device-width >= 375px)
+  and (device-width <= 667px)
+  and (width >= 667px)
+  and (width <= 667px)
+  and (height >= 375px)
+  and (height <= 375px)
   and (orientation: landscape) {
   .lottie-animation .lottie-container {
     min-height: 320px !important;
@@ -25,16 +98,66 @@
 }
 
 @media only screen
-  and (min-device-width: 414px)
-  and (max-device-width: 736px)
+  and (device-width >= 414px)
+  and (device-width <= 736px)
   and (orientation: landscape) {
   .lottie-animation .lottie-container {
     min-height: 320px !important;
   }
 }
 
-.lottie-animation lottie-player {
+/* lottie-web render target - explicit size so animation has space to draw */
+.lottie-animation .lottie-container .lottie-inner {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  overflow: visible;
+
+  /* Fallback if parent height is 0 (EDS flex/grid collapse) */
+  aspect-ratio: 600 / 450;
+}
+
+@media (width >= 1200px) {
+  .lottie-animation .lottie-container .lottie-inner {
+    min-height: 528px;
+  }
+}
+
+/* Original site pattern: lottie-player as direct child of container */
+.lottie-animation .lottie-container lottie-player {
   display: block;
   width: 100%;
   height: 100%;
+  min-height: 250px;
 }
+
+/* Debug: uncomment to confirm player element is present and sized */
+
+/* .lottie-animation .lottie-container lottie-player { outline: 2px solid rgba(200,0,0,0.6); } */
+
+@media (width >= 1200px) {
+  .lottie-animation .lottie-container lottie-player {
+    min-height: 528px;
+  }
+}
+
+/* lottie-web draws here; ensure SVG or canvas fills container */
+.lottie-animation .lottie-container .lottie-inner svg,
+.lottie-animation .lottie-container .lottie-inner canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  display: block;
+  object-fit: contain;
+}
+
+@media (width >= 1200px) {
+  .lottie-animation .lottie-container .lottie-inner svg,
+  .lottie-animation .lottie-container .lottie-inner canvas {
+    min-height: 528px;
+  }
+}
+
+/* Debug: uncomment to confirm container is visible (you should see a light gray box) */
+
+/* .lottie-animation .lottie-container .lottie-inner { background: #f0f0f0; } */

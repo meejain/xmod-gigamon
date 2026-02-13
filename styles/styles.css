@@ -56,7 +56,7 @@
 @media (width >= 900px) {
   :root {
     /* body sizes */
-    --body-font-size-m: 16px;
+    --body-font-size-m: 20px;
     --body-font-size-s: 14px;
     --body-font-size-xs: 13px;
 
