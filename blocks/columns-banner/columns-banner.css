@@ -5,12 +5,12 @@
 }
 
 .columns-banner {
-  padding: 60px 24px;
+  padding: 40px 24px;
   position: relative;
   overflow: hidden;
   background-image: url('https://www.gigamon.com/content/dam/website-assets/spotlight/F%26S-Spotlight.jpg.imgo.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: center top;
 }
 
 .columns-banner > div {

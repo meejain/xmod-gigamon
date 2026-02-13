@@ -2,7 +2,7 @@ function scrollSlider(block, direction) {
   const slidesContainer = block.querySelector('.carousel-news-slides');
   const slideWidth = block.querySelector('.carousel-news-slide').offsetWidth;
   const gap = 24;
-  const scrollAmount = slideWidth + gap;
+  const scrollAmount = (slideWidth + gap) * 3;
 
   slidesContainer.scrollBy({
     left: direction * scrollAmount,
@@ -101,4 +101,29 @@ export default async function decorate(block) {
 
   // Initial button state
   setTimeout(() => updateNavButtons(block), 100);
+
+  // Auto-play: advance every 3 seconds, loop back to start
+  let autoplayInterval = setInterval(() => {
+    const maxScroll = slidesWrapper.scrollWidth - slidesWrapper.clientWidth - 10;
+    if (slidesWrapper.scrollLeft >= maxScroll) {
+      slidesWrapper.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      scrollSlider(block, 1);
+    }
+  }, 3000);
+
+  // Pause auto-play on hover
+  block.addEventListener('mouseenter', () => {
+    clearInterval(autoplayInterval);
+  });
+  block.addEventListener('mouseleave', () => {
+    autoplayInterval = setInterval(() => {
+      const maxScroll = slidesWrapper.scrollWidth - slidesWrapper.clientWidth - 10;
+      if (slidesWrapper.scrollLeft >= maxScroll) {
+        slidesWrapper.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        scrollSlider(block, 1);
+      }
+    }, 3000);
+  });
 }
