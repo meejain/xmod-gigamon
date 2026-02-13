@@ -1,19 +1,33 @@
 /* footer */
 footer {
-  background-color: #121b1f;
-  color: rgba(255 255 255 / 90%);
-  font-size: 12px;
+  background-color: #323c3f;
+  color: rgb(255 255 255 / 90%);
+  font-size: 13px;
   font-family: var(--body-font-family);
 }
 
 footer .footer > div {
   margin: auto;
   max-width: 1280px;
-  padding: 40px 24px 24px;
+  padding: 48px 24px 24px;
 }
 
 footer .footer p {
   margin: 0;
+}
+
+/* reset all link styles inside footer */
+footer .footer a {
+  color: rgb(255 255 255 / 90%);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 2.2;
+  text-decoration: none;
+}
+
+footer .footer a:hover {
+  color: var(--brand-orange, #ff6b00);
+  text-decoration: none;
 }
 
 /* reset button decoration inside footer */
@@ -23,19 +37,20 @@ footer .footer .button-container {
 }
 
 footer .footer a.button {
-  display: block;
+  display: inline;
   padding: 0;
   margin: 0;
   background: none;
   border: none;
   border-radius: 0;
-  color: rgba(255 255 255 / 90%);
-  font-size: 12px;
-  font-weight: 500;
+  color: rgb(255 255 255 / 90%);
+  font-size: 13px;
+  font-weight: 400;
   line-height: 2.2;
-  text-decoration: none;
   text-align: left;
   white-space: normal;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 footer .footer a.button:hover {
@@ -66,60 +81,92 @@ footer .footer .columns > div > div {
 
 /* column headings */
 footer .footer .columns > div > div > p:first-child {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 footer .footer .columns > div > div > p:first-child strong {
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Orange badge tags (JOIN NOW, GET STARTED, NEW) */
+footer .footer .footer-tag {
+  display: inline;
+  background-color: #ff6c00;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px 4px 4px 0;
+  letter-spacing: 1.64px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 /* bottom section (social + legal + copyright) */
-footer .footer > div:last-child {
-  border-top: 1px solid rgba(255 255 255 / 15%);
-  padding-top: 24px;
+footer .footer > div > div:last-child {
+  border-top: 1px solid rgb(255 255 255 / 15%);
   margin-top: 8px;
 }
 
-/* social links row */
-footer .footer > div:last-child > p:first-child a,
-footer .footer > div:last-child > p:first-child a.button {
+footer .footer > div > div:last-child .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* social icons row */
+footer .footer .footer-social {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+footer .footer .footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+footer .footer .footer-social-icon:hover {
+  opacity: 1;
+}
+
+footer .footer .footer-social-icon img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+footer .footer > div > div:last-child .default-content-wrapper > p:nth-child(2) a {
   display: inline;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  margin-right: 8px;
-}
-
-footer .footer > div:last-child > p:first-child a:hover,
-footer .footer > div:last-child > p:first-child a.button:hover {
-  color: var(--brand-orange, #ff6b00);
-}
-
-/* legal links row */
-footer .footer > div:last-child > p:nth-child(2) {
-  margin-top: 16px;
-}
-
-footer .footer > div:last-child > p:nth-child(2) a,
-footer .footer > div:last-child > p:nth-child(2) a.button {
-  display: inline;
-  color: rgba(255 255 255 / 70%);
+  color: rgb(255 255 255 / 70%);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
-footer .footer > div:last-child > p:nth-child(2) a:hover,
-footer .footer > div:last-child > p:nth-child(2) a.button:hover {
+footer .footer > div > div:last-child .default-content-wrapper > p:nth-child(2) a:hover {
   color: var(--brand-orange, #ff6b00);
 }
 
 /* copyright */
-footer .footer > div:last-child > p:last-child {
-  margin-top: 16px;
-  color: rgba(255 255 255 / 50%);
+footer .footer > div > div:last-child .default-content-wrapper > p:last-child {
+  color: rgb(255 255 255 / 50%);
   font-size: 11px;
 }
 
@@ -131,5 +178,31 @@ footer .footer > div:last-child > p:last-child {
   footer .footer .columns > div {
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
+  }
+
+  footer .footer > div > div:last-child .default-content-wrapper {
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 0;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  /* copyright first on left */
+  footer .footer > div > div:last-child .default-content-wrapper > p:last-child {
+    order: 1;
+    margin-right: 24px;
+  }
+
+  /* legal links next */
+  footer .footer > div > div:last-child .default-content-wrapper > p:nth-child(2) {
+    order: 2;
+    flex: 1;
+  }
+
+  /* social icons far right */
+  footer .footer > div > div:last-child .default-content-wrapper > .footer-social {
+    order: 3;
+    margin-left: auto;
   }
 }
