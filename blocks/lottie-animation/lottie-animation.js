@@ -12,7 +12,7 @@
 import { readBlockConfig } from '../../scripts/aem.js';
 
 const LOTTIE_WEB_SCRIPT = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js';
-const LOTTIE_PLAYER_SCRIPT = 'https://unpkg.com/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js';
+const LOTTIE_PLAYER_SCRIPT = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
 const DEBUG = true; // set false in production; helps trace "Lottie:" in console
 
 function log(...args) {
@@ -53,23 +53,45 @@ function toAbsoluteJsonUrl(url) {
 }
 
 /**
- * Strip time-remap (`tm`) expressions from animation data.
- * lottie-web's expression engine for `loopOut`/`loopIn` on time-remap
- * layers crashes silently under EDS CSP, leaving the SVG empty.
- * Keyframe data (`k`) is preserved so the animation still plays.
+ * Expand loopOut('cycle') tm expressions into explicit keyframes.
+ *
+ * lottie-web's expression evaluator silently fails on EDS, crashing the
+ * SVG element builder.  Instead of stripping the expression (which kills
+ * the cycling animation), we replicate the loopOut('cycle') behaviour by
+ * duplicating the original keyframe cycle across the full layer duration.
  */
-function stripTmExpressions(data) {
+function expandTmCycles(data) {
   const walk = (layers) => {
     if (!Array.isArray(layers)) return;
     layers.forEach((layer) => {
-      if (layer.tm && layer.tm.x) {
-        delete layer.tm.x;
+      const { tm } = layer;
+      if (!tm || !tm.x || !tm.x.includes('loopOut')) return;
+      const kfs = tm.k;
+      if (!Array.isArray(kfs) || kfs.length < 2) return;
+
+      const cycleDur = kfs[kfs.length - 1].t - kfs[0].t;
+      if (cycleDur <= 0) return;
+
+      const dur = (layer.op || 900) - (layer.ip || 0);
+      const cycles = Math.ceil(dur / cycleDur) + 1;
+      const expanded = [];
+
+      for (let c = 0; c < cycles; c += 1) {
+        const off = c * cycleDur;
+        kfs.forEach((kf) => {
+          const copy = JSON.parse(JSON.stringify(kf));
+          copy.t = kf.t + off;
+          expanded.push(copy);
+        });
       }
+
+      tm.k = expanded;
+      delete tm.x;
     });
   };
   walk(data.layers);
   if (Array.isArray(data.assets)) {
-    data.assets.forEach((asset) => walk(asset.layers));
+    data.assets.forEach((a) => walk(a.layers));
   }
 }
 
@@ -140,9 +162,9 @@ function loadLottieIntoContainer(container) {
   inner.style.width = '100%';
   container.appendChild(inner);
 
-  const hasLottie = window.lottie
+  const lottieReady = window.lottie
     && typeof window.lottie.loadAnimation === 'function';
-  const scriptPromise = hasLottie
+  const scriptPromise = lottieReady
     ? Promise.resolve()
     : loadScript(LOTTIE_WEB_SCRIPT);
 
@@ -154,14 +176,14 @@ function loadLottieIntoContainer(container) {
     })
     .then((animationData) => {
       log('JSON loaded, frames/layers:', animationData?.op != null ? 'yes' : 'no');
-      stripTmExpressions(animationData);
+      expandTmCycles(animationData);
       const { lottie } = window;
       if (!lottie || typeof lottie.loadAnimation !== 'function') {
         throw new Error('lottie-web not available');
       }
       const runInit = () => {
         const useCanvas = container.dataset.lottieRenderer === 'canvas';
-        const startFrame = 400;
+        const startFrame = 0;
         const endFrame = animationData.op != null
           ? Math.ceil(animationData.op) : 857;
         const anim = lottie.loadAnimation({
@@ -177,16 +199,7 @@ function loadLottieIntoContainer(container) {
         });
         container.dataset.lottieStatus = 'loaded';
         if (anim && typeof anim.play === 'function') {
-          anim.addEventListener('DOMLoaded', () => {
-            anim.goToAndPlay(startFrame, true);
-            anim.play();
-          });
           anim.play();
-          anim.goToAndPlay(startFrame, true);
-          setTimeout(() => {
-            anim.goToAndPlay(startFrame, true);
-            anim.play();
-          }, 150);
         }
         log(
           'animation started',
@@ -258,8 +271,8 @@ function getDefaultDopJsonUrl() {
 
 export default function decorate(block) {
   const config = readBlockConfig(block);
-  const anim = config.animation && config.animation.trim();
-  const raw = anim || getDefaultDopJsonUrl();
+  const raw = (config.animation && config.animation.trim())
+    ? config.animation.trim() : getDefaultDopJsonUrl();
   const jsonUrl = toAbsoluteJsonUrl(raw);
 
   log('block decorate', jsonUrl);
