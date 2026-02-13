@@ -246,7 +246,7 @@ export default function decorate(block) {
   container.id = 'lottie-main';
   container.className = 'lottie-lazy lottie-container';
   container.setAttribute('data-jsonsrc', jsonUrl);
-  container.setAttribute('data-lottie-renderer', 'player');
+  container.setAttribute('data-lottie-renderer', 'svg');
   container.setAttribute('role', 'img');
   container.setAttribute('aria-label', 'Deep Observability Pipeline animation');
 
