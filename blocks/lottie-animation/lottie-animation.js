@@ -53,24 +53,45 @@ function toAbsoluteJsonUrl(url) {
 }
 
 /**
- * Strip time-remap expressions that use loopOut() — these crash lottie-web's
- * SVG element builder on EDS (expression eval silently fails, returning a
- * Boolean instead of an SVG element).  Removing only the `.x` (expression)
- * property keeps the keyframe data intact so the layer still plays; it just
- * won't cycle via loopOut.
+ * Expand loopOut('cycle') tm expressions into explicit keyframes.
+ *
+ * lottie-web's expression evaluator silently fails on EDS, crashing the
+ * SVG element builder.  Instead of stripping the expression (which kills
+ * the cycling animation), we replicate the loopOut('cycle') behaviour by
+ * duplicating the original keyframe cycle across the full layer duration.
  */
-function stripTmExpressions(data) {
+function expandTmCycles(data) {
   const walk = (layers) => {
     if (!Array.isArray(layers)) return;
     layers.forEach((layer) => {
-      if (layer.tm && layer.tm.x) {
-        delete layer.tm.x;
+      const { tm } = layer;
+      if (!tm || !tm.x || !tm.x.includes('loopOut')) return;
+      const kfs = tm.k;
+      if (!Array.isArray(kfs) || kfs.length < 2) return;
+
+      const cycleDur = kfs[kfs.length - 1].t - kfs[0].t;
+      if (cycleDur <= 0) return;
+
+      const dur = (layer.op || 900) - (layer.ip || 0);
+      const cycles = Math.ceil(dur / cycleDur) + 1;
+      const expanded = [];
+
+      for (let c = 0; c < cycles; c += 1) {
+        const off = c * cycleDur;
+        kfs.forEach((kf) => {
+          const copy = JSON.parse(JSON.stringify(kf));
+          copy.t = kf.t + off;
+          expanded.push(copy);
+        });
       }
+
+      tm.k = expanded;
+      delete tm.x;
     });
   };
   walk(data.layers);
   if (Array.isArray(data.assets)) {
-    data.assets.forEach((asset) => walk(asset.layers));
+    data.assets.forEach((a) => walk(a.layers));
   }
 }
 
@@ -155,7 +176,7 @@ function loadLottieIntoContainer(container) {
     })
     .then((animationData) => {
       log('JSON loaded, frames/layers:', animationData?.op != null ? 'yes' : 'no');
-      stripTmExpressions(animationData);
+      expandTmCycles(animationData);
       const { lottie } = window;
       if (!lottie || typeof lottie.loadAnimation !== 'function') {
         throw new Error('lottie-web not available');
