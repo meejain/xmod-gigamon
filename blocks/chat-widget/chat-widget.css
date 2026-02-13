@@ -1,0 +1,68 @@
+/* Chat widget - Drift only (no fallback). Block is hidden; Drift injects #drift-frame-controller + #drift-frame-chat */
+
+.chat-widget.chat-widget--drift-loaded {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Match original site: Drift chat window (drift-frame-chat) */
+#drift-frame-chat.drift-frame-chat-align-right,
+#drift-frame-chat.drift-frame-chat {
+  right: 12px !important;
+  width: 400px !important;
+  max-width: none !important;
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  max-height: 602px !important;
+  bottom: 114px !important;
+  min-width: 320px !important;
+  height: calc(100% - 75px) !important;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+#drift-frame-chat .drift-frame-chat {
+  background: transparent !important;
+  width: 400px !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+}
+
+/* Match original site: Drift controller / launcher (drift-frame-controller) */
+#drift-frame-controller.drift-frame-controller-align-right,
+#drift-frame-controller.drift-frame-controller {
+  right: 24px !important;
+  width: 360px !important;
+  max-width: none !important;
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  height: 100px !important;
+  bottom: 50px !important;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+#drift-frame-controller .drift-frame-controller,
+#drift-frame-controller iframe.drift-frame-controller {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  background: transparent !important;
+  width: 360px !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+}
+
+.drift-conductor-item {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-sizing: border-box;
+}

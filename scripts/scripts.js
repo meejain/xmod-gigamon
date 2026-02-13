@@ -133,6 +133,16 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  /* Chat widget (Drift/Gigabot) - load early so positioning CSS applies; Drift script is in head */
+  (async () => {
+    const { loadBlock } = await import('./aem.js');
+    const block = document.createElement('div');
+    block.dataset.blockName = 'chat-widget';
+    block.className = 'block chat-widget';
+    document.body.appendChild(block);
+    loadBlock(block);
+  })();
 }
 
 /**
