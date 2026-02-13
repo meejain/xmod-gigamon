@@ -1,9 +1,15 @@
+/* Full-width override */
+.tabs-spotlight-wrapper {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
 /* Block is the main container for the full-bleed image */
 .tabs-spotlight {
   position: relative;
   overflow: hidden;
   background: #1a2b4c;
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 /* Section heading pulled into block */

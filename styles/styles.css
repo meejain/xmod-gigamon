@@ -273,7 +273,7 @@ main .section.highlight {
 }
 
 main .section.grey {
-  background-color: #1a2b4c;
+  background-color: #323c3f;
   color: white;
   margin: 0;
   padding: 30px 0;
@@ -336,27 +336,72 @@ main .section.grey p {
 
 /* What's New section styling */
 /* stylelint-disable no-descending-specificity */
-main > div:has(.carousel-news) > p:first-child {
-  font-size: 12px;
+main .section.carousel-news-container {
+  text-align: center;
+  padding: 60px 0 40px;
+  margin: 0;
+}
+
+main .section.carousel-news-container > .default-content-wrapper > p:first-child {
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   color: #1a2b4c;
   margin-bottom: 8px;
 }
 
-main > div:has(.carousel-news) > p:nth-child(2) {
+main .section.carousel-news-container > .default-content-wrapper > p:nth-child(2) {
   font-size: 32px;
   font-weight: 700;
   color: #1a2b4c;
   margin-top: 0;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
-/* F&S Banner section - background image replaces dark bg */
+main .section.carousel-news-container > .carousel-news-wrapper {
+  text-align: left;
+}
+
+/* Section with tabs + featured case study */
+main .section.tabs-spotlight-container {
+  margin: 0;
+  background-color: #f7f9ff;
+}
+
+main .section.tabs-spotlight-container > .tabs-spotlight-wrapper {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+main .section.tabs-spotlight-container > .cards-featured-wrapper {
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+/* Quotes section - light blue-grey background */
+main .section.columns-quotes-container {
+  background-color: #f7f9ff;
+  margin: 0;
+  padding: 40px 0;
+}
+
+/* F&S Banner section - full-width background image */
 main .section.dark.columns-banner-container {
   background-color: transparent;
   padding: 0;
+}
+
+main .section.dark.columns-banner-container > .columns-banner-wrapper {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* Latest Blogs section */
+main .section.cards-blog-container {
+  margin: 40px 0 0;
+  padding-bottom: 60px;
+  border-top: 1px solid #e8e8e8;
 }
 
 /* Explore Use Cases section */

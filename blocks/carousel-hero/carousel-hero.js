@@ -111,12 +111,11 @@ export default async function decorate(block) {
     slideIndicators = document.createElement('ol');
     slideIndicators.classList.add('carousel-hero-slide-indicators');
     slideIndicatorsNav.append(slideIndicators);
-    block.append(slideIndicatorsNav);
 
     const slideNavButtons = document.createElement('div');
     slideNavButtons.classList.add('carousel-hero-navigation-buttons');
     slideNavButtons.innerHTML = `
-      <button type="button" class= "slide-prev" aria-label="Previous Slide"></button>
+      <button type="button" class="slide-prev" aria-label="Previous Slide"></button>
       <button type="button" class="slide-next" aria-label="Next Slide"></button>
     `;
 
@@ -138,6 +137,12 @@ export default async function decorate(block) {
   });
 
   container.append(slidesWrapper);
+
+  // Place indicators inside the slides container for absolute positioning
+  if (slideIndicators) {
+    container.append(slideIndicators.closest('nav'));
+  }
+
   block.prepend(container);
 
   if (!isSingleSlide) {
