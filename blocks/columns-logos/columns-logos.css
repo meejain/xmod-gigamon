@@ -5,7 +5,6 @@
   align-items: center;
   max-width: 100% !important;
   margin: 0 auto;
-  padding: 24px !important;
 }
 
 .columns-logos-container .default-content-wrapper {
@@ -102,7 +101,6 @@
   .columns-logos-container {
     flex-direction: row;
     align-items: center;
-    padding: 16px 32px !important;
     gap: 0;
   }
 
@@ -125,7 +123,7 @@
   }
 
   .columns-logos-item img {
-    height: 44px;
+    height: 70px;
     max-width: 160px;
   }
 
