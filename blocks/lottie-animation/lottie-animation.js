@@ -12,7 +12,7 @@
 import { readBlockConfig } from '../../scripts/aem.js';
 
 const LOTTIE_WEB_SCRIPT = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js';
-const LOTTIE_PLAYER_SCRIPT = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
+const LOTTIE_PLAYER_SCRIPT = 'https://unpkg.com/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js';
 const DEBUG = true; // set false in production; helps trace "Lottie:" in console
 
 function log(...args) {
@@ -44,11 +44,32 @@ function toAbsoluteJsonUrl(url) {
   const base = (typeof window !== 'undefined' && window.hlx?.codeBasePath) ? window.hlx.codeBasePath.replace(/\/$/, '') : '';
   const path = trimmed.startsWith('/')
     ? trimmed
-    : ((base ? `/${base}` : '') + '/' + trimmed.replace(/^\//, '')).replace(/\/+/g, '/');
+    : (`${base ? `/${base}` : ''}/${trimmed.replace(/^\//, '')}`).replace(/\/+/g, '/');
   try {
     return new URL(path, typeof window !== 'undefined' ? window.location.origin : '').href;
   } catch {
     return trimmed;
+  }
+}
+
+/**
+ * Strip time-remap (`tm`) expressions from animation data.
+ * lottie-web's expression engine for `loopOut`/`loopIn` on time-remap
+ * layers crashes silently under EDS CSP, leaving the SVG empty.
+ * Keyframe data (`k`) is preserved so the animation still plays.
+ */
+function stripTmExpressions(data) {
+  const walk = (layers) => {
+    if (!Array.isArray(layers)) return;
+    layers.forEach((layer) => {
+      if (layer.tm && layer.tm.x) {
+        delete layer.tm.x;
+      }
+    });
+  };
+  walk(data.layers);
+  if (Array.isArray(data.assets)) {
+    data.assets.forEach((asset) => walk(asset.layers));
   }
 }
 
@@ -119,7 +140,9 @@ function loadLottieIntoContainer(container) {
   inner.style.width = '100%';
   container.appendChild(inner);
 
-  const scriptPromise = (typeof globalThis !== 'undefined' && globalThis.lottie && typeof globalThis.lottie.loadAnimation === 'function')
+  const hasLottie = window.lottie
+    && typeof window.lottie.loadAnimation === 'function';
+  const scriptPromise = hasLottie
     ? Promise.resolve()
     : loadScript(LOTTIE_WEB_SCRIPT);
 
@@ -131,49 +154,63 @@ function loadLottieIntoContainer(container) {
     })
     .then((animationData) => {
       log('JSON loaded, frames/layers:', animationData?.op != null ? 'yes' : 'no');
-      const lottie = globalThis.lottie;
+      stripTmExpressions(animationData);
+      const { lottie } = window;
       if (!lottie || typeof lottie.loadAnimation !== 'function') {
         throw new Error('lottie-web not available');
       }
       const runInit = () => {
-        try {
-          const useCanvas = container.dataset.lottieRenderer === 'canvas';
-          const startFrame = 400;
-          const endFrame = animationData.op != null ? Math.ceil(animationData.op) : 857;
-          const anim = lottie.loadAnimation({
-            container: inner,
-            renderer: useCanvas ? 'canvas' : 'svg',
-            loop: true,
-            autoplay: true,
-            animationData,
-            initialSegment: [startFrame, endFrame],
-            rendererSettings: useCanvas
-              ? { preserveAspectRatio: 'xMidYMid meet' }
-              : { preserveAspectRatio: 'xMidYMid meet', progressiveLoad: false },
-          });
-          container.dataset.lottieStatus = 'loaded';
-          if (anim && typeof anim.play === 'function') {
-            anim.addEventListener('DOMLoaded', () => {
-              anim.goToAndPlay(startFrame, true);
-              anim.play();
-            });
-            anim.play();
+        const useCanvas = container.dataset.lottieRenderer === 'canvas';
+        const startFrame = 400;
+        const endFrame = animationData.op != null
+          ? Math.ceil(animationData.op) : 857;
+        const anim = lottie.loadAnimation({
+          container: inner,
+          renderer: useCanvas ? 'canvas' : 'svg',
+          loop: true,
+          autoplay: true,
+          animationData,
+          initialSegment: [startFrame, endFrame],
+          rendererSettings: useCanvas
+            ? { preserveAspectRatio: 'xMidYMid meet' }
+            : { preserveAspectRatio: 'xMidYMid meet', progressiveLoad: false },
+        });
+        container.dataset.lottieStatus = 'loaded';
+        if (anim && typeof anim.play === 'function') {
+          anim.addEventListener('DOMLoaded', () => {
             anim.goToAndPlay(startFrame, true);
-            setTimeout(() => {
-              anim.goToAndPlay(startFrame, true);
-              anim.play();
-            }, 150);
-          }
-          log('animation started', useCanvas ? '(canvas)' : '(svg)', 'segment', startFrame, '-', endFrame);
-          if (DEBUG && globalThis.lottie && globalThis.lottie.getRegisteredAnimations) {
-            setTimeout(() => {
-              const count = globalThis.lottie.getRegisteredAnimations().length;
-              const rect = inner.getBoundingClientRect();
-              log('getRegisteredAnimations:', count, '| container size:', rect.width, 'x', rect.height);
-            }, 500);
-          }
-        } catch (e) {
-          throw e;
+            anim.play();
+          });
+          anim.play();
+          anim.goToAndPlay(startFrame, true);
+          setTimeout(() => {
+            anim.goToAndPlay(startFrame, true);
+            anim.play();
+          }, 150);
+        }
+        log(
+          'animation started',
+          useCanvas ? '(canvas)' : '(svg)',
+          'segment',
+          startFrame,
+          '-',
+          endFrame,
+        );
+        if (DEBUG && window.lottie
+          && window.lottie.getRegisteredAnimations) {
+          setTimeout(() => {
+            const count = window.lottie
+              .getRegisteredAnimations().length;
+            const rect = inner.getBoundingClientRect();
+            log(
+              'getRegisteredAnimations:',
+              count,
+              '| container size:',
+              rect.width,
+              'x',
+              rect.height,
+            );
+          }, 500);
         }
       };
       requestAnimationFrame(() => {
@@ -221,7 +258,8 @@ function getDefaultDopJsonUrl() {
 
 export default function decorate(block) {
   const config = readBlockConfig(block);
-  const raw = (config.animation && config.animation.trim()) ? config.animation.trim() : getDefaultDopJsonUrl();
+  const anim = config.animation && config.animation.trim();
+  const raw = anim || getDefaultDopJsonUrl();
   const jsonUrl = toAbsoluteJsonUrl(raw);
 
   log('block decorate', jsonUrl);
@@ -230,7 +268,7 @@ export default function decorate(block) {
   container.id = 'lottie-main';
   container.className = 'lottie-lazy lottie-container';
   container.setAttribute('data-jsonsrc', jsonUrl);
-  container.setAttribute('data-lottie-renderer', 'player');
+  container.setAttribute('data-lottie-renderer', 'svg');
   container.setAttribute('role', 'img');
   container.setAttribute('aria-label', 'Deep Observability Pipeline animation');
 
