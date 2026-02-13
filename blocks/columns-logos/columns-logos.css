@@ -17,12 +17,12 @@
 
 .columns-logos::before {
   left: 0;
-  background: linear-gradient(to right, #1a2b4c 0%, transparent 100%);
+  background: linear-gradient(to right, #323c3f 0%, transparent 100%);
 }
 
 .columns-logos::after {
   right: 0;
-  background: linear-gradient(to left, #1a2b4c 0%, transparent 100%);
+  background: linear-gradient(to left, #323c3f 0%, transparent 100%);
 }
 
 .columns-logos-track {

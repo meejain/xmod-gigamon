@@ -232,25 +232,36 @@ header nav .nav-label:hover {
   color: #fff;
 }
 
-/* Orange active indicator bar */
-header nav .nav-drop[aria-expanded='true'] .nav-label::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 14px;
-  right: 14px;
-  height: 3px;
-  background-color: var(--brand-orange, #ff6b00);
-}
-
 @media (width >= 900px) {
+  /* Top-level nav items: fixed height matching header */
+  header nav .nav-sections > .default-content-wrapper > ul > li {
+    position: relative;
+    height: 68px;
+    display: flex;
+    align-items: center;
+  }
+
   header nav .nav-label {
-    padding: 24px 14px;
+    padding: 0 14px;
     height: 68px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    padding-top: 0;
+    margin: 0;
+  }
+
+  /* Orange hover indicator bar - on the LI at exact header bottom */
+  header nav .nav-sections > .default-content-wrapper > ul > li:hover::after,
+  header nav .nav-drop[aria-expanded='true']::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    right: 14px;
+    height: 3px;
+    background-color: var(--brand-orange, #ff6b00);
+    z-index: 201;
+    pointer-events: none;
   }
 }
 
@@ -267,7 +278,7 @@ header nav .nav-drop[aria-expanded='true'] .nav-label::after {
     font-size: 15px;
   }
 
-  header nav .nav-drop[aria-expanded='true'] .nav-label::after {
+  header nav .nav-drop[aria-expanded='true']::after {
     display: none;
   }
 }
