@@ -8,10 +8,12 @@ export default function decorate(block) {
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
       const pic = col.querySelector('picture');
-      if (pic) {
+      const img = !pic ? col.querySelector('img') : null;
+      const media = pic || img;
+      if (media && !(img && img.src.includes('about:error'))) {
         const logoItem = document.createElement('div');
         logoItem.className = 'columns-logos-item';
-        logoItem.appendChild(pic.cloneNode(true));
+        logoItem.appendChild(media.cloneNode(true));
         logos.push(logoItem);
       }
     });
